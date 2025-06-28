@@ -5,11 +5,10 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 from PIL import Image
+from library import make_json, send_json
+
 load_dotenv()
 client = OpenAI()
-
-my_key = "da6205a3-9e11-43b8-abae-180bd76be80f"
-
 
 def locate_map(imag_url):
     prompt = """Jesteś ekspertem geograficznym.

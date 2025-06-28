@@ -5,10 +5,11 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 
+from library import make_json, send_json
+
 load_dotenv()
 client = OpenAI()
 
-my_key = "da6205a3-9e11-43b8-abae-180bd76be80f"
 task_name = "mp3"
 
 def handle_audios(audio_dir):
@@ -57,25 +58,12 @@ def check_if_talks_about_institute(transcript):
     )
     return response.choices[0].message.content
 
-def make_json(data):
-    json_data = {
-        "task": task_name,
-        "apikey": my_key,
-        "answer": data
-    }
-    return json_data
-
-def send_json(json_data):
-    url = "https://c3ntrala.ag3nts.org/report"
-    response = requests.post(url, json=json_data)
-    return response.json()
-
 if __name__ == "__main__":
     handle_audios(os.path.join(os.path.dirname(__file__), "data", "przesluchania"))
     answer = handle_transcripts(os.path.join(os.path.dirname(__file__), "data", "przesluchania"))
     answer = answer.split("<answer>")[1].split("</answer>")[0]
     answer = "ul. prof. Stanisława Łojasiewicza"
     print(answer)
-    json_data = make_json(answer)
+    json_data = make_json(task_name, answer)
     response = send_json(json_data)
     print(response)

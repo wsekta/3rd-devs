@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import base64
+from library import make_json, send_json
 
 load_dotenv()
 client = OpenAI()
 
-my_key = "da6205a3-9e11-43b8-abae-180bd76be80f"
 task_name = "kategorie"
 
 def files_list_generator(directory):
@@ -96,18 +96,6 @@ def is_about_hardware(text):
         ]
     )
     return response.choices[0].message.content == "yes"
-def make_json(data):
-    json_data = {
-        "task": task_name,
-        "apikey": my_key,
-        "answer": data
-    }
-    return json_data
-
-def send_json(json_data):
-    url = "https://c3ntrala.ag3nts.org/report"
-    response = requests.post(url, json=json_data)
-    return response.json()
 
 if __name__ == "__main__":
     directory = os.path.join(os.path.dirname(__file__), "data", "pliki_z_fabryki")

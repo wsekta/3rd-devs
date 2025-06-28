@@ -5,14 +5,15 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 
+from library import make_json, send_json
+
 load_dotenv()
 client = OpenAI()
 
-my_key = "da6205a3-9e11-43b8-abae-180bd76be80f"
 task_name = "CENZURA"
 
 def get_data():
-    url = f"https://c3ntrala.ag3nts.org/data/{my_key}/cenzura.txt"
+    url = f"https://c3ntrala.ag3nts.org/data/{os.getenv('MY_KEY')}/cenzura.txt"
     response = requests.get(url)
     return response.text
 
@@ -48,24 +49,11 @@ def censor(text):
     )
     return response.output_text
 
-def make_json(data):
-    json_data = {
-        "task": task_name,
-        "apikey": my_key,
-        "answer": data
-    }
-    return json_data
-
-def send_json(json_data):
-    url = "https://c3ntrala.ag3nts.org/report"
-    response = requests.post(url, json=json_data)
-    return response.json()
-
 if __name__ == "__main__":
     data = get_data()
     print(data)
     answer = censor(data)
     print(answer)
-    json_data = make_json(answer)
+    json_data = make_json("CENZURA", answer)
     response = send_json(json_data)
     print(response)

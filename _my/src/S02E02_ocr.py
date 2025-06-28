@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import os
 from openai import OpenAI
 from PIL import Image
+from library import make_json, send_json
+
 load_dotenv()
 client = OpenAI()
 
@@ -25,8 +27,6 @@ from docling.pipeline.vlm_pipeline import VlmPipeline
 
 from doctr.models import ocr_predictor
 from doctr.io import DocumentFile
-
-my_key = "da6205a3-9e11-43b8-abae-180bd76be80f"
 
 def ocr_image(imag_url):
     prompt = """You act like a OCR. You are given an image and you need to extract the text from the image.

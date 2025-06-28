@@ -4,15 +4,15 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
+from library import make_json, send_json
 
 load_dotenv()
 client = OpenAI()
 
-my_key = "da6205a3-9e11-43b8-abae-180bd76be80f"
 task_name = "robotid"
 
 def get_robot_description():
-    url = f"https://c3ntrala.ag3nts.org/data/{my_key}/robotid.json"
+    url = f"https://c3ntrala.ag3nts.org/data/{os.getenv("MY_KEY")}/robotid.json"
     response = requests.get(url)
     return response.json()
 
@@ -37,19 +37,6 @@ def generate_image(prompt):
         size="1024x1024"
     )
     return response.data[0].url
-
-def make_json(data):
-    json_data = {
-        "task": task_name,
-        "apikey": my_key,
-        "answer": data
-    }
-    return json_data
-
-def send_json(json_data):
-    url = "https://c3ntrala.ag3nts.org/report"
-    response = requests.post(url, json=json_data)
-    return response.json()
 
 if __name__ == "__main__":
     json_data = get_robot_description()
