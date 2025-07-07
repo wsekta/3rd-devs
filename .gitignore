@@ -6,3 +6,4 @@ node_modules/
 **/*.db
 .vscode/
 **/tmp
+qdrant_data/
